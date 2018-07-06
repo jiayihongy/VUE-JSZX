@@ -32,11 +32,11 @@
     data(){
       return {
         name:'',
-        transitionName:''
+        transitionName:'',
       }
     },
     created(){
-      this.module_multi_detail();
+
 
 
     },
@@ -52,14 +52,7 @@
       }
     },
     methods:{
-      module_multi_detail(){
-        service({
-          url:address.module_multi_detail,
-        }).then(res=>{
-          console.log(res)
 
-        })
-      },
     }
   }
 </script>

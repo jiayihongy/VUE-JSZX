@@ -10,7 +10,7 @@ import Dashboard from '@/view/Dashboard/Dashboard'
 Vue.use(Router)
 
 
-let routerconfig = [
+export let routerconfig = [
   {
     path:'/',
     // redirect:'/dashboard',

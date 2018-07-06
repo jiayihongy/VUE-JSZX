@@ -106,8 +106,66 @@
 </template>
 
 <script>
+    import {routerconfig} from "../router";
+    import service from '@/api/fetch';
+    import {address} from '@/api/api';
     export default {
-        name: "sidebar"
+        name: "sidebar",
+
+        data(){
+          return {
+            rootRouterList:[],
+          }
+        },
+        methods:{
+          module_multi_detail(){
+            var that = this;
+            service({
+              url:address.module_multi_detail,
+            }).then(res=>{
+
+              that.handleList(res.menu)
+
+            })
+          },
+          handleList(ajaxlists){
+            var that = this;
+            var ajaxlist = JSON.parse(JSON.stringify(ajaxlists))
+            console.log(ajaxlist)
+
+            var newlist = [];
+            var baselist;
+            for(let val of routerconfig){
+              if(val.path == '/dashboard'){
+                baselist = val.children;
+                break;
+              }
+            }
+            console.log(baselist)
+            for(let ele of ajaxlist){
+              for(let son of ele.son){
+                for(let element of baselist){
+                  if(element.name == son.name){
+                    for(let key in element){
+                      son[key] = element[key]
+                    }
+                  }
+                }
+
+              }
+
+            }
+            console.log(ajaxlist)
+
+          }
+        },
+
+        created(){
+          this.module_multi_detail();
+        },
+        beforeMount(){
+
+        }
     }
 </script>
 
