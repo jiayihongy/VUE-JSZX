@@ -19,19 +19,31 @@
 
       </cpanel>
 
-      <Modal
-        v-model="dftmodal"
-        ok-text="是"
-        cancel-text="否"
-      >
+      <Modal v-model="dftmodal">
         <p slot="header" style="color:#57a3f3;text-align:center">
           <Icon type="information-circled"></Icon>
           <span>提示</span>
         </p>
         <p style="text-align: center;font-size: 14px">是否指配导游？</p>
         <div slot="footer">
-          <Button type="info">取消</Button>
+          <Button type="error" @click="dftmodal=false">取消</Button>
+          <Button type="info" @click="no">否</Button>
+          <Button type="primary" @click="ok">是</Button>
         </div>
+      </Modal>
+      <Modal v-model="qxctmodal" @on-ok="qxctOk">
+        <p slot="header" style="color:#57a3f3;text-align:center">
+          <Icon type="information-circled"></Icon>
+          <span>提示</span>
+        </p>
+        <p style="text-align: center;font-size: 14px">确认取消这条订单成团吗？</p>
+      </Modal>
+      <Modal v-model="ttmodal" @on-ok="ttOk">
+        <p slot="header" style="color:#57a3f3;text-align:center">
+          <Icon type="information-circled"></Icon>
+          <span>提示</span>
+        </p>
+        <p style="text-align: center;font-size: 14px">确认删除这条订单吗？</p>
       </Modal>
     </cwrap>
 
@@ -58,10 +70,9 @@
 
 
       return {
-        //modal框
-        dftmodal:false,
-        //取消modal
-        qxct:false,
+        ttmodal:false,//退团modal
+        dftmodal:false,//成团modal框
+        qxctmodal:false,//取消modal
         dftId:'',
         /*form表单参数*/
         config: {
@@ -147,7 +158,8 @@
                   },
                   on: {
                     click: () => {
-
+                      this.dftId = params.row.id;
+                      this.qxctmodal = true;
                     }
                   }
                 }, '取消成团'),
@@ -162,7 +174,12 @@
                   },
                   on: {
                     click: () => {
-
+                      this.$router.push({
+                        name:'修改发班计划',
+                        query:{
+                          userId:params.row.id
+                        }
+                      })
                     }
                   }
                 }, '编辑'),
@@ -177,7 +194,8 @@
                   },
                   on: {
                     click: () => {
-
+                      this.dftId = params.row.id;
+                      this.ttmodal = true;
                     }
                   }
                 }, '退团')
@@ -201,8 +219,44 @@
     computed: {},
     methods: {
       ok(){
-        var modal = this.$refs.ct;
+        this.dftmodal = false
 
+      },
+      qxctOk(){
+        var that = this;
+        $.ajax({
+          url:address.url+address.cancelOrder,
+          type:'post',
+          data:{
+            id: that.dftId,
+            token:Cookies.get('token')
+          }
+        }).then(res=>{
+          if(res.CODE==200){
+            msg.success(res.MSG);
+            that.getAccounts()
+          }else{
+            msg.error(res.MSG)
+          }
+        })
+      },
+      ttOk(){
+        var that = this;
+        $.ajax({
+          url:address.url+address.deleteOrder,
+          type:'post',
+          data:{
+            id: that.dftId,
+            token:Cookies.get('token')
+          }
+        }).then(res=>{
+          if(res.CODE==200){
+            msg.success(res.MSG);
+            that.getAccounts()
+          }else{
+            msg.error(res.MSG)
+          }
+        })
       },
       no(){
         var that = this;
@@ -233,6 +287,7 @@
             }
           }).then(res=>{
             console.log(res)
+            that.dftmodal=false
           })
 
 

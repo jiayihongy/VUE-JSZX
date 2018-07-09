@@ -161,6 +161,11 @@ export let routerconfig = [
         component:() => import('@/view/Dashboard/components/getTourist'),
         name:'游客列表'
       },
+      {
+        path:'updateOrder',
+        component:() => import('@/view/Dashboard/components/updateOrder'),
+        name:'修改发班计划'
+      },
     ]
   },
   {
