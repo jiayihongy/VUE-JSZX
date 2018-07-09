@@ -1,5 +1,6 @@
+
 <template>
-  <div :class="$style.allaccounts">
+  <div>
     <cwrap>
       <Row style="margin-bottom: 10px">
         <Col span="24">
@@ -9,32 +10,21 @@
           </Button>
         </Col>
       </Row>
-      <cpanel title="线路价格详情">
-        <p>暂无数据</p>
-      </cpanel>
 
-      <cpanel title="用户订单信息">
-        <cform :Config="config" :Items="items" :Model="model" @lauchdata="getSonData" ></cform>
-      </cpanel>
+
 
       <cpanel>
         <div slot="ctitle">
-          <ctitle title="用户订单列表">
+          <ctitle title="游客列表">
             <div>
-              <Row>
                 <Row>
-                  <Col span="11" offset="1">
-                    <router-link :to="{name:'添加用户订单',query:{userId:userId}}">
-                      <Button type="primary" icon="plus-round" long>报名</Button>
-                    </router-link>
-                  </Col>
-                  <Col span="11" offset="1">
+
+                  <Col span="12" offset="12">
 
                     <Button type="primary" icon="person-add" long @click="exportguide">导出导游</Button>
 
                   </Col>
                 </Row>
-              </Row>
             </div>
           </ctitle>
         </div>
@@ -71,7 +61,7 @@
 
 
   export default {
-    name: "signupAllOrderList",
+    name: "getTourist",
     components: {Ctitle, Cpanel, Cwrap, Cform, Ctabel},
     mixins: [goBack],
     data() {
@@ -114,71 +104,24 @@
             }
           },
           {
-            title: '订单号',
-            key: 'name',
+            title: '游客姓名',
+            key: 'ykxm',
           },
           {
-            title: '用户姓名',
-            key: 'title'
+            title: '游客电话',
+            key: 'ykdh'
           },
           {
-            title: '总人数',
-            key: 'routeSortId'
-          },
-          {
-            title: '实际支付',
-            key: 'endPlace'
-          },
-          {
-            title: '支付状态',
-            key: 'days'
-          },
-          {
-            title: '报名渠道',
-            key: 'status'
-          },
-          {
-            title: '新建时间',
-            key: 'sysRoleId'
+            title: '游客身份证号',
+            key: 'yksfzh'
           },
 
-          {
-            title: '操作',
-            key: 'action',
-            width: 120,
-            align: 'center',
-            render: (h, params) => {
-              return h('div', [
-
-                h('Button', {
-                  props: {
-                    type: 'info',
-                    size: 'small',
-                    icon: 'flag'
-                  },
-                  style: {
-                    // marginLeft:'-5px'
-                  },
-                  on: {
-                    click: () => {
-
-                    }
-                  }
-                }, '发班计划')
-              ]);
-            }
-          }
         ],
         tdata: [
           {
-            name: 'John Brown',
-            title: 18,
-            routeSortId: '阿斯蒂芬',
-            endPlace: 18921214521,
-            days: 212144545454,
-            status: '张大炮',
-            sysRoleId: '13025254514',
-            createTime: 3,
+            ykxm: 'John Brown',
+            ykdh: 18,
+            yksfzh: '阿斯蒂芬',
           },
 
         ]

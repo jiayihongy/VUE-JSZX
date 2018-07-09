@@ -113,7 +113,12 @@
                   },
                   on: {
                     click: () => {
-                      console.log(params.row.status)
+                      this.$router.push({
+                        name:'游客列表',
+                        query:{
+                          userId:params.row.id
+                        }
+                      })
                     }
                   }
                 }, '游客信息'),
@@ -187,6 +192,7 @@
               routeTitle: ele.routeTitle,
               date: ele.date,
               status: that.getOrderState(ele.status),
+              id:ele.id
             }
             arr.push(obj)
           })

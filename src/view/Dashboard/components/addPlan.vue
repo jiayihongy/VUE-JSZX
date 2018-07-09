@@ -1,6 +1,6 @@
 
 <template>
-  <div>
+  <div class="addplan">
     <cwrap>
       <cpanel title="添加发班计划">
         <Row style="margin-top: 20px;">
@@ -271,12 +271,15 @@
 </script>
 
 <style lang="scss">
-  .ivu-badge-dot{
+  .addplan{
+    .ivu-badge-dot{
       height: 4px;
       width: 4px;
-  }
-  .blue .ivu-badge-dot{
-    background: #2d8cf0;
+    }
+    .blue .ivu-badge-dot{
+      background: #2d8cf0;
+    }
+
   }
 
 

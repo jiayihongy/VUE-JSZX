@@ -19,7 +19,20 @@
 
       </cpanel>
 
-
+      <Modal
+        v-model="dftmodal"
+        ok-text="是"
+        cancel-text="否"
+      >
+        <p slot="header" style="color:#57a3f3;text-align:center">
+          <Icon type="information-circled"></Icon>
+          <span>提示</span>
+        </p>
+        <p style="text-align: center;font-size: 14px">是否指配导游？</p>
+        <div slot="footer">
+          <Button type="info">取消</Button>
+        </div>
+      </Modal>
     </cwrap>
 
 
@@ -35,7 +48,7 @@
   import Ctabel from '@/components/commen-table'
   import Cwrap from '@/components/commen-wrap'
   import Cookies from 'js-cookie'
-  import axios from 'axios'
+  import msg from '@/assets/js/message'
 
 
   export default {
@@ -45,7 +58,11 @@
 
 
       return {
-        traveldata: '',
+        //modal框
+        dftmodal:false,
+        //取消modal
+        qxct:false,
+        dftId:'',
         /*form表单参数*/
         config: {
           labelW: 120,
@@ -115,7 +132,8 @@
                   },
                   on: {
                     click: () => {
-                      console.log(params.row.status)
+                      this.dftId = params.row.id;
+                      this.dftmodal = true;
                     }
                   }
                 }, '成团'),
@@ -182,7 +200,47 @@
     },
     computed: {},
     methods: {
+      ok(){
+        var modal = this.$refs.ct;
 
+      },
+      no(){
+        var that = this;
+        $.ajax({
+          url:address.url+address.updatePublishStatus,
+          type:'post',
+          data:{
+            guideOrNot: 0,
+            publishId: that.dftId,
+            token:Cookies.get('token')
+          }
+        }).then(res=>{
+          if(res.CODE==200){
+            msg.success(res.MSG);
+            that.getAccounts()
+          }else{
+            msg.error(res.MSG)
+          }
+        }).then(function (data) {
+
+          $.ajax({
+            url:address.url+address.guideDistribute,
+            type:'post',
+            data:{
+              guideOrNot: 0,
+              publishId: that.dftId,
+              token:Cookies.get('token')
+            }
+          }).then(res=>{
+            console.log(res)
+          })
+
+
+
+
+
+        })
+      },
 
 
       getSonData(data) {
@@ -220,7 +278,8 @@
             var obj = {
               routeTitle: ele.routeTitle,
               date: ele.date,
-              count:ele.count
+              count:ele.count,
+              id:ele.id
             }
             arr.push(obj)
           })
@@ -263,7 +322,7 @@
             label: '出发日期',
             prop: 'cfrq',
             type: 'date',
-            holder: '请输入需要搜索的目的地'
+            holder: '请输入需要搜索的出发日期'
           }
         ]
       }

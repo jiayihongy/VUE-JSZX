@@ -141,7 +141,9 @@
                 break;
               }
             }
-            console.log(baselist)
+            // console.log(baselist)
+
+
             for(let ele of ajaxlist){
               for(let son of ele.son){
                 for(let element of baselist){
@@ -155,6 +157,7 @@
               }
 
             }
+
             console.log(ajaxlist)
 
           }

@@ -137,7 +137,12 @@
                   },
                   on: {
                     click: () => {
-
+                      this.$router.push({
+                        name:'修改导游和车辆信息',
+                        query:{
+                          userId:params.row.id
+                        }
+                      })
                     }
                   }
                 }, '修改导游')

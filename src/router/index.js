@@ -146,6 +146,21 @@ export let routerconfig = [
         component:() => import('@/view/Dashboard/components/signupAllOrderList'),
         name:'所有订单编辑'
       },
+      {
+        path:'adminAddUserOrder',
+        component:() => import('@/view/Dashboard/components/adminAddUserOrder'),
+        name:'添加用户订单'
+      },
+      {
+        path:'updateGuide',
+        component:() => import('@/view/Dashboard/components/updateGuide'),
+        name:'修改导游和车辆信息'
+      },
+      {
+        path:'getTourist',
+        component:() => import('@/view/Dashboard/components/getTourist'),
+        name:'游客列表'
+      },
     ]
   },
   {

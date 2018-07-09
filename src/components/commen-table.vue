@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Table border :columns="header" :data="data"></Table>
+    <Table border :columns="header" :data="data" ref="exportable"></Table>
     <slot>
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
@@ -46,7 +46,10 @@
           changePageSize(num){
             this.$emit('setPS',num)
           }
-        }
+        },
+      mounted(){
+
+      }
     }
 </script>
 
