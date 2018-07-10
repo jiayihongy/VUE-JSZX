@@ -120,7 +120,14 @@
                   },
                   on: {
                     click: () => {
-
+                      this.$router.push({
+                        name:'审核用户订单',
+                        query:{
+                          userId:params.row.id,
+                          orderId:params.row.nid,
+                          status:1
+                        }
+                      })
                     }
                   }
                 }, '详情')
@@ -183,7 +190,6 @@
           }
 
         }).then(function (data) {
-
           var arr = []
           var count = data.checkOrderCount;
           var users = data.checkOrderList;
@@ -197,6 +203,8 @@
               status: that.payState(ele.status),
               sysUserId: ele.sysUserId== -1?'线上报名':'线下报名',
               createTime: ele.createTime,
+              id:ele.id,
+              nid:ele.routePublishId
             }
             arr.push(obj)
           })

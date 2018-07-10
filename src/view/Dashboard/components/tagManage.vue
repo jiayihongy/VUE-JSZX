@@ -27,7 +27,14 @@
         </ctabel>
 
       </cpanel>
-
+      <!--显示modal-->
+      <Modal v-model="xsmodal" @on-ok="xsOk">
+        <p slot="header" style="color:#57a3f3;text-align:center">
+          <Icon type="information-circled"></Icon>
+          <span>提示</span>
+        </p>
+        <p style="text-align: center;font-size: 14px">是否确认在页面展示该标签？</p>
+      </Modal>
 
     </cwrap>
 
@@ -56,8 +63,10 @@
 
 
       return {
+        xsmodal:false,
+        xsid:'',
+
         AdUrlPath:'',
-        visible:'',
         /*form表单参数*/
         config: {
           labelW: 120,
@@ -120,11 +129,7 @@
                     // marginLeft:'-5px'
                     // cursor:'pointer'
                   },
-                  on: {
-                    click: () => {
 
-                    }
-                  }
                 },'删除'),
               ]);
             }
@@ -143,19 +148,21 @@
               }, [
                 h('Button', {
                   props: {
-                    type: 'info',
+                    type: params.row.disPlaySite==1?'ghost':'info',
                     size: 'small',
-                    icon:'qr-scanner'
+                    icon:params.row.disPlaySite==1?'toggle-filled':'toggle'
                   },
                   style: {
                     // marginLeft:'-5px'
                   },
                   on: {
                     click: () => {
-
+                      this.xsmodal = true;
+                      this.xsid = params.row.id;
+                      this.xsdisplay = params.row.disPlaySite;
                     }
                   }
-                }, '显示'),
+                },params.row.disPlaySite==1?'取消显示':'显示'),
 
                 h('Button', {
                   props: {
@@ -187,6 +194,30 @@
     },
     computed: {},
     methods: {
+      xsOk(){
+        console.log(this.xsid,this.xsdisplay)
+        var that = this;
+        $.ajax({
+          url:address.url+address.editLabelSite,
+          type:'post',
+          data:{
+            token:Cookies.get('token'),
+            disPlaySite:that.xsdisplay==1?0:1,
+            routeSortId:that.xsid,
+          }
+        }).then(res=>{
+          if(res.CODE == 200){
+            msg.success(res.MSG);
+            that.getAccounts();
+          }else{
+            msg.error(res.MSG)
+          }
+        })
+
+
+
+
+      },
       saveTag(){
         var that = this;
         var pic = this.AdUrlPath;
@@ -285,7 +316,8 @@
             var obj = {
               routeSort:ele.routeSort,
               pic:ele.image,
-              id:ele.routeSortId
+              id:ele.routeSortId,
+              disPlaySite:ele.disPlaySite
             }
             arr.push(obj)
           })

@@ -8,7 +8,7 @@
           </Select>
           <DatePicker v-else-if="item.type == 'date'" :type="item.type" :placeholder="item.holder" v-model="Model[item.prop]" format="yyyy-MM-dd"  @on-change="changeDate" :data-date="item.prop" ref="mydate"></DatePicker>
 
-          <Input v-else :type="item.type" :disabled="item.disabled" v-model="Model[item.prop]" :placeholder="item.holder"></Input>
+          <Input v-else :type="item.type" :disabled="item.disabled" v-model="Model[item.prop]" :placeholder="item.holder" autosize></Input>
         </FormItem>
       </Col>
       <slot name="uploadModule">

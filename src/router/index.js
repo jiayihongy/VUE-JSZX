@@ -166,6 +166,12 @@ export let routerconfig = [
         component:() => import('@/view/Dashboard/components/updateOrder'),
         name:'修改发班计划'
       },
+      {
+        path:'checkUserOrder',
+        component:() => import('@/view/Dashboard/components/checkUserOrder'),
+        name:'审核用户订单'
+      },
+
     ]
   },
   {

@@ -18,8 +18,9 @@
 
             <DatePicker type="date"
                         :editable="false"
-                        multiple placeholder="请选择出发日期"
-                        @on-change="datesdata"
+                        multiple
+                        v-model="model.cfrq"
+                        readonly
                         style="width: 500px"></DatePicker>
           </Col>
         </Row>
@@ -44,7 +45,7 @@
             <Slider v-model="model.etlsj" show-input :max="max"></Slider>
           </Col>
         </Row>
-        <Row style="margin-top: 30px;">
+        <Row style="margin-top: 30px;" v-if="model.formList.length >0">
           <Col span="24">
             <h2>
               <Icon type="wand" style="color: #f16543"></Icon>
@@ -81,7 +82,7 @@
         </Row>
         <Row style="margin-top: 10px;">
           <Col span="16" style="padding-right: 10px">
-            <Input v-model="qtsm" type="textarea" placeholder="请输入订单的退团扣费以及其他说明"></Input>
+            <Input v-model="qtsm" type="textarea" autosize placeholder="请输入订单的退团扣费以及其他说明"></Input>
           </Col>
         </Row>
 
@@ -139,7 +140,7 @@
 
         isDisabed:true,//禁用保存按钮
 
-        max:1000,//滑块最大值
+        max:10000,//滑块最大值
 
         //数据模型
         model:{
@@ -187,10 +188,7 @@
 
     },
     methods: {
-      //获取日期值
-      datesdata(data){
-        this.model.cfrq=data;
-      },
+
       checkNumber(rule,value,callback){
 
         if(!VerifyNumber(value)){
@@ -238,25 +236,21 @@
 
 
 
-      getPriceType() {
+      getPriceInfo() {
         var that = this;
+
         service({
-          url:address.getPriceType,
+          url:address.getOrder,
           data:{
-            routeId:that.userId
+            id:that.userId
           }
         }).then(res=>{
-          var arr = [];
-          res.forEach(ele=>{
-            var obj = {
-              priceType:ele.priceType,
-              priceTypeId:ele.priceTypeId,
-              price1:'',
-              price:''
-            }
-            arr.push(obj)
-          })
-          that.model.formList = arr;
+         var info = res.orderMap.publishInfo;
+
+          that.model.cfrq = info.date;
+          that.model.crlsj = info.adultPrice;
+          that.model.etlsj = info.childPrice;
+          that.qtsm = info.quitRemarks;
 
         })
       },
@@ -264,7 +258,7 @@
 
     },
     created() {
-      this.getPriceType()
+      this.getPriceInfo()
     },
 
   }
